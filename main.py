@@ -8,13 +8,14 @@ API_KEY = os.environ.get("BINGX_API_KEY")
 API_SECRET = os.environ.get("BINGX_API_SECRET")
 BASE_URL = "https://open-api.bingx.com"
 
-def sign(params: dict) -> str:
-    query_string = "&".join([f"{k}={v}" for k, v in sorted(params.items())])
-    return hmac.new(
+def sign(params: dict):
+    query_string = "&".join([f"{k}={params[k]}" for k in sorted(params.keys())])
+    signature = hmac.new(
         API_SECRET.encode("utf-8"),
         query_string.encode("utf-8"),
         hashlib.sha256
     ).hexdigest()
+    return query_string, signature
 
 def get_balance():
     path = "/openApi/spot/v1/account/balance"
@@ -22,9 +23,10 @@ def get_balance():
         "timestamp": int(time.time() * 1000),
         "recvWindow": 5000
     }
-    params["signature"] = sign(params)
+    query_string, signature = sign(params)
+    url = f"{BASE_URL}{path}?{query_string}&signature={signature}"
     headers = {"X-BX-APIKEY": API_KEY}
-    r = requests.get(BASE_URL + path, params=params, headers=headers)
+    r = requests.get(url, headers=headers)
     return r.json()
 
 def get_btc_price():

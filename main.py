@@ -27,7 +27,7 @@ def get_balance():
     r = requests.get(url, headers=headers)
     return r.json()
 
-def get_klines(symbol="BTC-USDT", interval="5min", limit=100):
+def get_klines(symbol="BTC-USDT", interval="5m", limit=100):
     path = "/openApi/spot/v2/market/kline"
     params = {"symbol": symbol, "interval": interval, "limit": limit}
     r = requests.get(BASE_URL + path, params=params)

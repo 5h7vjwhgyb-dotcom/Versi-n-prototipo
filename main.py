@@ -32,6 +32,7 @@ def get_klines(symbol="BTC-USDT", interval="5min", limit=100):
     params = {"symbol": symbol, "interval": interval, "limit": limit}
     r = requests.get(BASE_URL + path, params=params)
     data = r.json()
+    print("RAW RESPONSE:", data)
     closes = [float(c[4]) for c in data["data"]]
     closes.reverse()
     return closes

@@ -22,16 +22,16 @@ def rsi(values, period=14):
     return rsi_values
 
 def generate_signal(closes):
-    ema9 = ema(closes, 9)
-    ema21 = ema(closes, 21)
+    ema5 = ema(closes, 5)
+    ema13 = ema(closes, 13)
     rsi14 = rsi(closes, 14)
     if len(rsi14) < 2:
         return "ESPERAR"
-    cross_up = ema9[-2] <= ema21[-2] and ema9[-1] > ema21[-1]
-    cross_down = ema9[-2] >= ema21[-2] and ema9[-1] < ema21[-1]
+    cross_up = ema5[-2] <= ema13[-2] and ema5[-1] > ema13[-1]
+    cross_down = ema5[-2] >= ema13[-2] and ema5[-1] < ema13[-1]
     current_rsi = rsi14[-1]
-    if cross_up and current_rsi < 70:
+    if cross_up and current_rsi < 75:
         return "COMPRAR"
-    elif cross_down and current_rsi > 30:
+    elif cross_down and current_rsi > 25:
         return "VENDER"
     return "ESPERAR"

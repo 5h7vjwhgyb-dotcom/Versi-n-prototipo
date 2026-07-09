@@ -17,7 +17,7 @@ SL_PCT = 0.01
 TP_PCT = 0.015
 CHECK_INTERVAL = 60
 
-def get_klines(symbol=SYMBOL, interval="5m", limit=100):
+def get_klines(symbol=SYMBOL, interval="1m", limit=100):
     path = "/openApi/spot/v2/market/kline"
     params = {"symbol": symbol, "interval": interval, "limit": limit}
     r = requests.get(BASE_URL + path, params=params)
